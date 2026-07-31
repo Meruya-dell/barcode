@@ -126,7 +126,6 @@ function scanBarcode() {
     
 
             function (decodedText) {
-                alert("TERBACA : " + decodedText);
                 txt.value = decodedText;
 
                 beep();
