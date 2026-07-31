@@ -111,10 +111,9 @@ background:#28A745;
 
 
 
-
-/* =======================
-   CAMERA AREA
-======================= */
+/* ===================
+   CAMERA
+=================== */
 
 
 .scanner-box{
@@ -124,7 +123,6 @@ display:none;
 position:relative;
 
 width:100%;
-
 max-width:380px;
 
 height:260px;
@@ -162,10 +160,8 @@ border-radius:15px;
 
 
 
-/* FRAME */
 
 .scan-frame{
-
 
 position:absolute;
 
@@ -177,9 +173,7 @@ top:50%;
 
 left:50%;
 
-
 transform:translate(-50%,-50%);
-
 
 border:3px solid white;
 
@@ -189,35 +183,28 @@ z-index:10;
 
 pointer-events:none;
 
-
 }
 
 
 
-/* SUDUT HIJAU */
 
 .scan-frame:before{
-
 
 content:"";
 
 position:absolute;
 
-
 width:35px;
 
 height:35px;
-
 
 top:-3px;
 
 left:-3px;
 
-
 border-left:5px solid lime;
 
 border-top:5px solid lime;
-
 
 }
 
@@ -226,63 +213,46 @@ border-top:5px solid lime;
 
 .scan-frame:after{
 
-
 content:"";
 
 position:absolute;
-
 
 width:35px;
 
 height:35px;
 
-
 right:-3px;
 
 bottom:-3px;
-
 
 border-right:5px solid lime;
 
 border-bottom:5px solid lime;
 
-
 }
 
 
 
-/* GARIS SCAN */
-
 
 .scan-line{
 
-
 position:absolute;
-
 
 left:10%;
 
 width:80%;
 
-
 height:3px;
 
-
 background:red;
-
 
 box-shadow:
 0 0 10px red,
 0 0 20px red;
 
-
-
 animation:scanMove 2s infinite;
 
-
 z-index:20;
-
-
 
 }
 
@@ -290,33 +260,19 @@ z-index:20;
 
 @keyframes scanMove{
 
-
 0%{
-
 top:25%;
-
 }
-
-
 
 50%{
-
 top:75%;
-
 }
-
-
 
 100%{
-
 top:25%;
-
 }
 
-
-
 }
-
 
 
 
@@ -325,7 +281,6 @@ top:25%;
 
 
 .card{
-
 
 margin-top:30px;
 
@@ -336,7 +291,6 @@ border-radius:12px;
 padding:20px;
 
 border:1px solid #ddd;
-
 
 }
 
