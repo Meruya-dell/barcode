@@ -11,16 +11,16 @@ let html5QrCode=null;
 
 window.onload=function(){
 
-txt.focus();
+    txt.focus();
 
 };
 
 
 
 
-// =============================
+// =================
 // SEARCH
-// =============================
+// =================
 
 async function cari(){
 
@@ -42,17 +42,18 @@ return;
 try{
 
 
-let response =
-await fetch(API_URL+"?barcode="+encodeURIComponent(barcode));
+let response = await fetch(
+API_URL+"?barcode="+encodeURIComponent(barcode)
+);
 
 
 
-let data =
-await response.json();
+let data = await response.json();
 
 
 
 if(!data){
+
 
 hasilBarcode.innerHTML="-";
 
@@ -60,34 +61,41 @@ hasilNama.innerHTML="BARCODE TIDAK DITEMUKAN";
 
 hasilHarga.innerHTML="-";
 
+
 return;
 
 }
 
 
 
+
 hasilBarcode.innerHTML=data.barcode;
+
 
 hasilNama.innerHTML=data.nama;
 
+
 hasilHarga.innerHTML=
-"Rp "+Number(data.harga).toLocaleString("id-ID");
-
-
-
-txt.focus();
-
-txt.select();
+"Rp "+Number(data.harga)
+.toLocaleString("id-ID");
 
 
 
 }
 
-catch(err){
+
+
+catch(e){
+
 
 alert("Gagal koneksi server");
 
+
+console.log(e);
+
+
 }
+
 
 
 }
@@ -112,9 +120,12 @@ cari();
 
 
 
-// =============================
+
+
+// =================
 // SCAN
-// =============================
+// =================
+
 
 function scanBarcode(){
 
@@ -127,8 +138,8 @@ return;
 
 
 
-
-document.getElementById("reader").style.display="block";
+document.getElementById("reader")
+.style.display="block";
 
 
 
@@ -142,10 +153,8 @@ Html5Qrcode.getCameras()
 .then(cameras=>{
 
 
-
 let cameraId =
 cameras[cameras.length-1].id;
-
 
 
 
@@ -156,12 +165,11 @@ cameraId,
 
 {
 
-
 fps:15,
 
 
 qrbox:{
-width:350,
+width:300,
 height:150
 },
 
@@ -174,9 +182,7 @@ Html5QrcodeSupportedFormats.EAN_13
 },
 
 
-
 function(decodedText){
-
 
 
 txt.value=decodedText;
@@ -187,23 +193,19 @@ beep();
 
 
 
-
 stopScanner();
 
 
 
-setTimeout(function(){
-
+setTimeout(()=>{
 
 cari();
 
-
-},800);
+},500);
 
 
 
 },
-
 
 
 function(error){}
@@ -212,15 +214,17 @@ function(error){}
 );
 
 
-})
 
+})
 
 .catch(err=>{
 
 
-alert("Kamera gagal dibuka");
+alert("Kamera gagal : "+err);
+
 
 });
+
 
 
 }
@@ -228,22 +232,12 @@ alert("Kamera gagal dibuka");
 
 
 
-
-
-// =============================
-// STOP CAMERA
-// =============================
 
 function stopScanner(){
 
 
 
-if(!html5QrCode){
-
-return;
-
-}
-
+if(html5QrCode){
 
 
 html5QrCode.stop()
@@ -251,36 +245,14 @@ html5QrCode.stop()
 .then(()=>{
 
 
-
 html5QrCode.clear();
 
 
-
 html5QrCode=null;
 
 
-
-document.getElementById("reader").innerHTML =
-`
-<div class="scan-frame"></div>
-<div class="scan-line"></div>
-`;
-
-
-
-document.getElementById("reader").style.display="none";
-
-
-
-})
-
-.catch(err=>{
-
-
-console.log(err);
-
-
-html5QrCode=null;
+document.getElementById("reader")
+.style.display="none";
 
 
 });
@@ -289,13 +261,11 @@ html5QrCode=null;
 }
 
 
+}
 
 
 
 
-// =============================
-// SOUND
-// =============================
 
 function beep(){
 
@@ -308,7 +278,6 @@ let osc =
 ctx.createOscillator();
 
 
-
 osc.frequency.value=900;
 
 
@@ -318,16 +287,17 @@ osc.connect(ctx.destination);
 osc.start();
 
 
-
 setTimeout(()=>{
 
 
 osc.stop();
 
+
 ctx.close();
 
 
 },120);
+
 
 
 }
