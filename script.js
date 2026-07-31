@@ -1,32 +1,32 @@
-const API_URL =
+const API_URL = 
 "https://script.google.com/macros/s/AKfycbw0d1cWaAvS_PWn6XU45K1hrrzTnbWK6jYsD3cMXpWlHrft-Xee2wV9rG3UwfVTBmgv/exec";
 
 
-const txt=document.getElementById("barcode");
+const txt = document.getElementById("barcode");
 
 
-let html5QrCode=null;
+let html5QrCode = null;
 
 
 
 window.onload=function(){
 
-    txt.focus();
+txt.focus();
 
 };
 
 
 
 
-// =================
+// =======================
 // SEARCH
-// =================
+// =======================
+
 
 async function cari(){
 
 
-let barcode=txt.value.trim();
-
+let barcode = txt.value.trim();
 
 
 if(barcode==""){
@@ -64,38 +64,32 @@ hasilHarga.innerHTML="-";
 
 return;
 
-}
 
+}
 
 
 
 hasilBarcode.innerHTML=data.barcode;
 
-
 hasilNama.innerHTML=data.nama;
 
-
 hasilHarga.innerHTML=
-"Rp "+Number(data.harga)
-.toLocaleString("id-ID");
+"Rp "+Number(data.harga).toLocaleString("id-ID");
+
+
+txt.select();
 
 
 
-}
-
-
-
-catch(e){
+}catch(err){
 
 
 alert("Gagal koneksi server");
 
-
-console.log(e);
+console.log(err);
 
 
 }
-
 
 
 }
@@ -120,69 +114,65 @@ cari();
 
 
 
-
-
-// =================
-// SCAN
-// =================
+// =======================
+// SCANNER
+// =======================
 
 
 function scanBarcode(){
 
 
-if(html5QrCode){
 
-return;
-
-}
+if(html5QrCode)return;
 
 
 
-document.getElementById("reader")
-.style.display="block";
+document.querySelector(".scanner-box").style.display="block";
 
 
 
-html5QrCode =
-new Html5Qrcode("reader");
+html5QrCode=new Html5Qrcode("reader");
 
 
 
-Html5Qrcode.getCameras()
-
-.then(cameras=>{
+Html5Qrcode.getCameras().then(cameras=>{
 
 
-let cameraId =
-cameras[cameras.length-1].id;
+const cameraId=cameras[cameras.length-1].id;
 
 
 
 html5QrCode.start(
+
 
 cameraId,
 
 
 {
 
+
 fps:15,
 
 
 qrbox:{
-width:300,
-height:150
+width:330,
+height:120
 },
 
 
 formatsToSupport:[
+
 Html5QrcodeSupportedFormats.EAN_13
+
 ]
 
 
 },
 
 
+
 function(decodedText){
+
 
 
 txt.value=decodedText;
@@ -201,26 +191,26 @@ setTimeout(()=>{
 
 cari();
 
-},500);
+},300);
 
 
 
 },
 
 
+
 function(error){}
+
 
 
 );
 
 
 
-})
-
-.catch(err=>{
+}).catch(err=>{
 
 
-alert("Kamera gagal : "+err);
+alert("Kamera gagal dibuka\n"+err);
 
 
 });
@@ -232,17 +222,19 @@ alert("Kamera gagal : "+err);
 
 
 
+// =======================
+// STOP
+// =======================
+
 
 function stopScanner(){
 
 
+if(!html5QrCode)return;
 
-if(html5QrCode){
 
 
-html5QrCode.stop()
-
-.then(()=>{
+html5QrCode.stop().then(()=>{
 
 
 html5QrCode.clear();
@@ -251,8 +243,7 @@ html5QrCode.clear();
 html5QrCode=null;
 
 
-document.getElementById("reader")
-.style.display="none";
+document.querySelector(".scanner-box").style.display="none";
 
 
 });
@@ -261,21 +252,22 @@ document.getElementById("reader")
 }
 
 
-}
 
 
 
+
+// =======================
+// BEEP
+// =======================
 
 
 function beep(){
 
 
-let ctx =
-new AudioContext();
+let ctx=new AudioContext();
 
 
-let osc =
-ctx.createOscillator();
+let osc=ctx.createOscillator();
 
 
 osc.frequency.value=900;
@@ -291,7 +283,6 @@ setTimeout(()=>{
 
 
 osc.stop();
-
 
 ctx.close();
 
