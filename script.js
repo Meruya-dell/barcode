@@ -1,201 +1,294 @@
-// ======================================
-// KONFIGURASI
-// ======================================
+const API_URL = 
+"https://script.google.com/macros/s/AKfycbw0d1cWaAvS_PWn6XU45K1hrrzTnbWK6jYsD3cMXpWlHrft-Xee2wV9rG3UwfVTBmgv/exec";
 
-const API_URL = "https://script.google.com/macros/s/AKfycbw0d1cWaAvS_PWn6XU45K1hrrzTnbWK6jYsD3cMXpWlHrft-Xee2wV9rG3UwfVTBmgv/exec";
 
 const txt = document.getElementById("barcode");
 
+
 let html5QrCode = null;
 
-// Fokus ke textbox
-window.onload = function () {
-    txt.focus();
+
+
+window.onload=function(){
+
+txt.focus();
+
 };
 
-// ======================================
-// CARI PRODUK
-// ======================================
 
-async function cari() {
 
-    const barcode = txt.value.trim();
 
-    if (barcode === "") {
-        alert("Masukkan Barcode");
-        txt.focus();
-        return;
-    }
+// =======================
+// SEARCH
+// =======================
 
-    try {
 
-        const response = await fetch(API_URL + "?barcode=" + encodeURIComponent(barcode));
-        
-        if (!response.ok) {
-            throw new Error("API Error : " + response.status);
-        }
-        
-        const data = await response.json();
+async function cari(){
 
-        if (!data) {
 
-            document.getElementById("hasilBarcode").innerHTML = "-";
-            document.getElementById("hasilNama").innerHTML = "BARCODE TIDAK DITEMUKAN";
-            document.getElementById("hasilHarga").innerHTML = "-";
+let barcode = txt.value.trim();
 
-            txt.focus();
-            txt.select();
 
-            return;
-        }
+if(barcode==""){
 
-        document.getElementById("hasilBarcode").innerHTML = data.barcode;
-        document.getElementById("hasilNama").innerHTML = data.nama;
-        document.getElementById("hasilHarga").innerHTML =
-            "Rp " + Number(data.harga).toLocaleString("id-ID");
+alert("Masukkan Barcode");
 
-        txt.focus();
-        txt.select();
-
-    } catch (err) {
-
-        console.error(err);
-        alert(
-            "Gagal menghubungi server.\n\n" + err.message
-            );
-
-    }
+return;
 
 }
 
-// ======================================
-// ENTER = SEARCH
-// ======================================
 
-txt.addEventListener("keypress", function (e) {
 
-    if (e.key === "Enter") {
+try{
 
-        cari();
 
-    }
+let response = await fetch(
+API_URL+"?barcode="+encodeURIComponent(barcode)
+);
+
+
+
+let data = await response.json();
+
+
+
+if(!data){
+
+
+hasilBarcode.innerHTML="-";
+
+hasilNama.innerHTML="BARCODE TIDAK DITEMUKAN";
+
+hasilHarga.innerHTML="-";
+
+
+return;
+
+
+}
+
+
+
+hasilBarcode.innerHTML=data.barcode;
+
+hasilNama.innerHTML=data.nama;
+
+hasilHarga.innerHTML=
+"Rp "+Number(data.harga).toLocaleString("id-ID");
+
+
+txt.select();
+
+
+
+}catch(err){
+
+
+alert("Gagal koneksi server");
+
+console.log(err);
+
+
+}
+
+
+}
+
+
+
+
+
+txt.addEventListener("keypress",function(e){
+
+
+if(e.key==="Enter"){
+
+cari();
+
+}
+
 
 });
 
-// ======================================
-// SCAN BARCODE
-// ======================================
 
-function scanBarcode() {
 
-    if (html5QrCode) return;
 
-    document.getElementById("reader").style.display = "block";
 
-    html5QrCode = new Html5Qrcode("reader");
+// =======================
+// SCANNER
+// =======================
 
-    Html5Qrcode.getCameras().then(cameras => {
-       console.log(cameras);
 
-        if (cameras.length === 0) {
+function scanBarcode(){
 
-            alert("Kamera tidak ditemukan");
-            return;
 
-        }
 
-        const cameraId = cameras[cameras.length - 1].id;
+if(html5QrCode)return;
 
-        html5QrCode.start(
 
-            cameraId,
 
-            {
-                fps: 10,
-                
-                qrbox: {
-                    width: 350,
-                    height: 150
-                },
-                aspectRatio:1.7777778,
-                
-                formatsToSupport:[
-                    Html5QrcodeSupportedFormats.EAN_13
-                    ]
-            },
-    
+document.querySelector(".scanner-box").style.display="block";
 
-            function (decodedText) {
-                txt.value = decodedText;
 
-                beep();
 
-                stopScanner();
-                setTimeout(function(){
+html5QrCode=new Html5Qrcode("reader");
 
-                cari();
-                },500);
 
-            },
 
-            function () {
-                // scan gagal diabaikan
-            }
+Html5Qrcode.getCameras().then(cameras=>{
 
-        );
 
-    }).catch(err => {
+const cameraId=cameras[cameras.length-1].id;
 
-        alert("Tidak dapat membuka kamera.\n" + err);
 
-    });
+
+html5QrCode.start(
+
+
+cameraId,
+
+
+{
+
+
+fps:15,
+
+
+qrbox:{
+width:330,
+height:120
+},
+
+
+formatsToSupport:[
+
+Html5QrcodeSupportedFormats.EAN_13
+
+]
+
+
+},
+
+
+
+function(decodedText){
+
+
+
+txt.value=decodedText;
+
+
+
+beep();
+
+
+
+stopScanner();
+
+
+
+setTimeout(()=>{
+
+cari();
+
+},300);
+
+
+
+},
+
+
+
+function(error){}
+
+
+
+);
+
+
+
+}).catch(err=>{
+
+
+alert("Kamera gagal dibuka\n"+err);
+
+
+});
+
+
 
 }
 
-// ======================================
-// STOP SCANNER
-// ======================================
 
-function stopScanner() {
 
-    if (!html5QrCode) return;
 
-    html5QrCode.stop().then(() => {
+// =======================
+// STOP
+// =======================
 
-        html5QrCode.clear();
 
-        html5QrCode = null;
+function stopScanner(){
 
-        document.getElementById("reader").style.display = "none";
 
-    });
+if(!html5QrCode)return;
+
+
+
+html5QrCode.stop().then(()=>{
+
+
+html5QrCode.clear();
+
+
+html5QrCode=null;
+
+
+document.querySelector(".scanner-box").style.display="none";
+
+
+});
+
 
 }
 
-// ======================================
+
+
+
+
+
+// =======================
 // BEEP
-// ======================================
+// =======================
 
-function beep() {
 
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+function beep(){
 
-    const osc = ctx.createOscillator();
 
-    osc.type = "sine";
+let ctx=new AudioContext();
 
-    osc.frequency.value = 900;
 
-    osc.connect(ctx.destination);
+let osc=ctx.createOscillator();
 
-    osc.start();
 
-    setTimeout(() => {
+osc.frequency.value=900;
 
-        osc.stop();
 
-        ctx.close();
+osc.connect(ctx.destination);
 
-    }, 120);
+
+osc.start();
+
+
+setTimeout(()=>{
+
+
+osc.stop();
+
+ctx.close();
+
+
+},120);
+
+
 
 }
