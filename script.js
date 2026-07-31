@@ -111,16 +111,16 @@ function scanBarcode() {
             cameraId,
 
             {
-                fps: 15,
+                fps: 10,
                 
                 qrbox: {
-                    width: 300,
+                    width: 350,
                     height: 150
                 },
                 aspectRatio:1.7777778,
                 
                 formatsToSupport:[
-                    Html5QrcodeSupportedFormats.ALL_FORMATS
+                    Html5QrcodeSupportedFormats.EAN_13
                     ]
             },
     
