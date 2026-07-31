@@ -4,6 +4,7 @@ const API_URL =
 let txt;
 let html5QrCode = null;
 let ocrTimer = null;
+let isOCRRunning = false;
 
 window.onload=function(){
 
@@ -120,7 +121,7 @@ Html5QrcodeSupportedFormats.EAN_13
 },
 
 function(decodedText){
-clearTimeout(ocrTimer);
+clearInterval(ocrTimer);
 
 txt.value=decodedText;
 
@@ -160,48 +161,60 @@ alert(
 
 async function bacaAngkaOCR(){
 
-    const video = document.querySelector("#reader video");
+    if(isOCRRunning) return;
+    isOCRRunning = true;
 
-    if(!video || video.videoWidth===0){
-      return;
+    try{
+
+        const video = document.querySelector("#reader video");
+
+        if(!video || video.videoWidth===0){
+            return;
+        }
+
+        const canvas = document.createElement("canvas");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(video,0,0);
+
+        const result = await Tesseract.recognize(
+            canvas,
+            "eng"
+        );
+
+        const text = result.data.text.replace(/\s/g,"");
+
+        const match = text.match(/\d{8,13}/);
+
+        if(match){
+          clearInterval(ocrTimer);
+
+            txt.value = match[0];
+
+            beep();
+
+            stopScanner();
+
+            setTimeout(cari,300);
+
+        }
+
+    } finally {
+
+        isOCRRunning = false;
+
     }
-
-    const canvas = document.createElement("canvas");
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(video,0,0);
-
-    const result = await Tesseract.recognize(
-        canvas,
-        "eng"
-    );
-
-    const text = result.data.text.replace(/\s/g,"");
-
-    const match = text.match(/\d{12,13}/);
-
-    if(match){
-
-        txt.value = match[0];
-
-        beep();
-
-        stopScanner();
-
-        setTimeout(cari,300);
-
-    }
-
 }
 
 function stopScanner(){
 
 if(!html5QrCode)return;
 clearInterval(ocrTimer);
+ocrTimer = null;
+  
 html5QrCode.stop()
-
 .then(()=>{
 
 html5QrCode.clear();
