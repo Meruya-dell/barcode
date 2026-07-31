@@ -80,82 +80,62 @@ alert("Gagal koneksi server");
 
 function scanBarcode(){
 
-if(html5QrCode)return;
+    // Jika kamera sedang aktif -> tutup
+    if(html5QrCode){
+        stopScanner();
+        return;
+    }
 
-document.querySelector(".scanner-box")
-.style.display="block";
+    document.querySelector(".scanner-box").style.display = "block";
 
-html5QrCode =
-new Html5Qrcode("reader");
+    html5QrCode = new Html5Qrcode("reader");
 
-Html5Qrcode.getCameras()
+    Html5Qrcode.getCameras().then(cameras => {
 
-.then(cameras=>{
+        const backCamera = cameras.find(c =>
+            c.label.toLowerCase().includes("back") ||
+            c.label.toLowerCase().includes("rear")
+        );
 
-const backCamera = cameras.find(c =>
-    c.label.toLowerCase().includes("back") ||
-    c.label.toLowerCase().includes("rear")
-);
+        const cameraId = backCamera
+            ? backCamera.id
+            : cameras[cameras.length - 1].id;
 
-const cameraId = backCamera
-    ? backCamera.id
-    : cameras[cameras.length - 1].id;
+        html5QrCode.start(
+            cameraId,
+            {
+                fps:15,
+                qrbox:{
+                    width:330,
+                    height:120
+                },
+                formatsToSupport:[
+                    Html5QrcodeSupportedFormats.EAN_13
+                ]
+            },
+            function(decodedText){
 
-html5QrCode.start(
+                txt.value = decodedText;
 
-cameraId,
+                beep();
 
-{
+                stopScanner();
 
-fps:15,
+                setTimeout(cari,500);
 
-qrbox:{
-width:330,
-height:120
-},
+            },
+            function(){}
+        );
 
-formatsToSupport:[
-Html5QrcodeSupportedFormats.EAN_13
-]
+    }).catch(err => {
 
-},
+        alert("Kamera tidak bisa dibuka\n" + err);
 
-function(decodedText){
-clearInterval(ocrTimer);
+        html5QrCode = null;
 
-txt.value=decodedText;
+        document.querySelector(".scanner-box").style.display = "none";
 
-beep();
-
-stopScanner();
-
-setTimeout(()=>{
-
-cari();
-
-},500);
-
-},
-
-function(){}
-  
-);
-
-// Jika 2 detik belum terbaca barcode
-ocrTimer = setInterval(() => {
-    bacaAngkaOCR();
-}, 2000);
-
-})
-
-.catch(err=>{
-
-alert(
-"Kamera tidak bisa dibuka\n"+err
-);
-
-
-});
+    });
 
 }
 
@@ -210,27 +190,27 @@ async function bacaAngkaOCR(){
 
 function stopScanner(){
 
-if(!html5QrCode)return;
-clearInterval(ocrTimer);
-ocrTimer = null;
-  
-html5QrCode.stop()
-.then(()=>{
+    if(!html5QrCode) return;
 
-html5QrCode.clear();
+    clearInterval(ocrTimer);
 
-html5QrCode=null;
+    html5QrCode.stop()
+    .then(()=>{
 
-document.querySelector(".scanner-box")
-.style.display="none";
+        html5QrCode.clear();
 
-})
+        html5QrCode = null;
 
-.catch(()=>{
+        document.querySelector(".scanner-box").style.display = "none";
 
-html5QrCode=null;
+    })
+    .catch(()=>{
 
-});
+        html5QrCode = null;
+
+        document.querySelector(".scanner-box").style.display = "none";
+
+    });
 
 }
 
