@@ -95,6 +95,7 @@ function scanBarcode() {
     html5QrCode = new Html5Qrcode("reader");
 
     Html5Qrcode.getCameras().then(cameras => {
+       console.log(cameras);
 
         if (cameras.length === 0) {
 
@@ -103,39 +104,43 @@ function scanBarcode() {
 
         }
 
-        const backCamera =
-            cameras.find(c => c.label.toLowerCase().includes("back"));
-
-        const cameraId = backCamera
-            ? backCamera.id
-            : cameras[cameras.length - 1].id;
+        const cameraId = cameras[cameras.length - 1].id;
 
         html5QrCode.start(
 
             cameraId,
 
             {
-                fps: 10,
+                fps: 15,
+                
                 qrbox: {
-                    width: 250,
-                    height: 120
-                }
+                    width: 300,
+                    height: 150
+                },
+                aspectRatio:1.7777778,
+                
+                formatsToSupport:[
+                    Html5QrcodeSupportedFormats.ALL_FORMATS
+                    ]
             },
+    
 
             function (decodedText) {
-
+                alert("TERBACA : " + decodedText);
                 txt.value = decodedText;
 
                 beep();
 
                 stopScanner();
+                setTimeout(function(){
 
                 cari();
+                },500);
 
             },
 
             function () {
-                // abaikan
+                // scan gagal diabaikan
             }
 
         );
