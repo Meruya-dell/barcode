@@ -15,69 +15,133 @@
 
 </head>
 
+
 <body>
+
 
 <div class="container">
 
-    <div class="header">
-        CEK HARGA PRODUK
-    </div>
 
-    <div class="input-box">
+<div class="header">
+    CEK HARGA PRODUK
+</div>
 
-        <label>Barcode</label>
 
-        <input
-            id="barcode"
-            type="text"
-            placeholder="Scan / Ketik Barcode"
-            autocomplete="off">
 
-    </div>
+<div class="input-box">
 
-    <div class="button-group">
+<label>Barcode</label>
 
-        <button class="search" onclick="cari()">
-            🔍 SEARCH
-        </button>
-
-        <button class="scan" onclick="scanBarcode()">
-            📷 SCAN
-        </button>
-
-    </div>
-
-    <div id="reader">
-        <div class="scan-frame"></div>
-        <div class="scan-line"></div>
-    </div>
-
-    <div class="card">
-
-        <div class="row">
-            <div class="title">Barcode</div>
-            <div class="value" id="hasilBarcode">-</div>
-        </div>
-
-        <div class="row">
-            <div class="title">Nama Produk</div>
-            <div class="value" id="hasilNama">-</div>
-        </div>
-
-        <div class="row">
-            <div class="title">Harga</div>
-            <div class="price" id="hasilHarga">-</div>
-        </div>
-
-    </div>
-
-    <div class="footer">
-        EENG IRAWAN WEBSEARCH
-    </div>
+<input
+id="barcode"
+type="text"
+placeholder="Scan / Ketik Barcode"
+autocomplete="off">
 
 </div>
 
+
+
+<div class="button-group">
+
+
+<button class="search" onclick="cari()">
+🔍 SEARCH
+</button>
+
+
+<button class="scan" onclick="scanBarcode()">
+📷 SCAN
+</button>
+
+
+</div>
+
+
+
+<!-- AREA SCANNER -->
+
+<div class="scanner-box">
+
+
+    <div id="reader"></div>
+
+
+    <div class="scan-frame"></div>
+
+
+    <div class="scan-line"></div>
+
+
+</div>
+
+
+
+
+<div class="card">
+
+
+<div class="row">
+
+<div class="title">
+Barcode
+</div>
+
+<div class="value" id="hasilBarcode">
+-
+</div>
+
+</div>
+
+
+
+<div class="row">
+
+<div class="title">
+Nama Produk
+</div>
+
+<div class="value" id="hasilNama">
+-
+</div>
+
+</div>
+
+
+
+<div class="row">
+
+<div class="title">
+Harga
+</div>
+
+<div class="price" id="hasilHarga">
+-
+</div>
+
+</div>
+
+
+
+</div>
+
+
+
+<div class="footer">
+
+EENG IRAWAN WEBSEARCH
+
+</div>
+
+
+
+</div>
+
+
+
 <script src="script.js"></script>
 
+
 </body>
+
 </html>
