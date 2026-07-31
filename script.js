@@ -30,7 +30,11 @@ async function cari() {
     try {
 
         const response = await fetch(API_URL + "?barcode=" + encodeURIComponent(barcode));
-
+        
+        if (!response.ok) {
+            throw new Error("API Error : " + response.status);
+        }
+        
         const data = await response.json();
 
         if (!data) {
@@ -56,7 +60,9 @@ async function cari() {
     } catch (err) {
 
         console.error(err);
-        alert("Gagal menghubungi server.");
+        alert(
+            "Gagal menghubungi server.\n\n" + err.message
+            );
 
     }
 
