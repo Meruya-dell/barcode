@@ -7,7 +7,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-<title>Cek Harga Produk</title>
+<title>Barcode System</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -23,7 +23,7 @@
 
 
 <div class="header">
-CEK HARGA PRODUK
+    CEK HARGA PRODUK
 </div>
 
 
@@ -32,12 +32,11 @@ CEK HARGA PRODUK
 
 <label>Barcode</label>
 
-<input 
+<input
 id="barcode"
 type="text"
 placeholder="Scan / Ketik Barcode"
 autocomplete="off">
-
 
 </div>
 
@@ -47,16 +46,12 @@ autocomplete="off">
 
 
 <button class="search" onclick="cari()">
-
 🔍 SEARCH
-
 </button>
 
 
 <button class="scan" onclick="scanBarcode()">
-
 📷 SCAN
-
 </button>
 
 
@@ -64,17 +59,21 @@ autocomplete="off">
 
 
 
+<!-- AREA SCANNER -->
 
-<div id="reader">
+<div class="scanner-box">
 
 
-<div class="scan-frame"></div>
+    <div id="reader"></div>
 
-<div class="scan-line"></div>
+
+    <div class="scan-frame"></div>
+
+
+    <div class="scan-line"></div>
 
 
 </div>
-
 
 
 
@@ -96,7 +95,6 @@ Barcode
 
 
 
-
 <div class="row">
 
 <div class="title">
@@ -108,7 +106,6 @@ Nama Produk
 </div>
 
 </div>
-
 
 
 
@@ -127,8 +124,6 @@ Harga
 
 
 </div>
-
-
 
 
 
