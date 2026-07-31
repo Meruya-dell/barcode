@@ -1,142 +1,4 @@
-*{
-
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,Helvetica,sans-serif;
-
-}
-
-
-body{
-
-background:#eef2f7;
-
-}
-
-
-
-.container{
-
-width:100%;
-min-height:100vh;
-background:white;
-padding:20px;
-
-}
-
-
-
-.header{
-
-text-align:center;
-color:#1976D2;
-font-size:30px;
-font-weight:bold;
-margin-bottom:25px;
-
-}
-
-
-
-.input-box{
-
-margin-top:25px;
-
-}
-
-
-
-label{
-
-font-size:18px;
-font-weight:bold;
-
-}
-
-
-
-input{
-
-width:100%;
-height:60px;
-margin-top:10px;
-padding:10px 15px;
-font-size:24px;
-border-radius:10px;
-border:2px solid #1976D2;
-outline:none;
-
-}
-
-
-
-.button-group{
-
-display:flex;
-justify-content:center;
-gap:15px;
-margin-top:20px;
-
-}
-
-
-
-button{
-
-width:180px;
-height:55px;
-border:none;
-border-radius:10px;
-color:white;
-font-size:20px;
-font-weight:bold;
-cursor:pointer;
-
-}
-
-
-
-.search{
-
-background:#1976D2;
-
-}
-
-
-
-.scan{
-
-background:#28A745;
-
-}
-
-
-
-
-#reader{
-
-display:none;
-
-position:relative;
-
-width:100%;
-
-max-width:380px;
-
-height:260px;
-
-margin:20px auto;
-
-overflow:hidden;
-
-border-radius:15px;
-
-}
-
-
-
-
+/* RESET CAMERA AREA */
 
 #reader video{
 
@@ -152,91 +14,9 @@ border-radius:15px;
 
 
 
-
-
-.card{
-
-margin-top:30px;
-
-background:#f8f9fa;
-
-border-radius:12px;
-
-padding:20px;
-
-border:1px solid #ddd;
-
-}
-
-
-
-.row{
-
-margin-bottom:20px;
-
-}
-
-
-
-.title{
-
-color:#666;
-
-font-size:15px;
-
-}
-
-
-
-.value{
-
-font-size:22px;
-
-font-weight:bold;
-
-margin-top:5px;
-
-}
-
-
-
-.price{
-
-color:#d50000;
-
-font-size:38px;
-
-font-weight:bold;
-
-}
-
-
-
-.footer{
-
-margin-top:25px;
-
-text-align:center;
-
-color:#777;
-
-font-size:13px;
-
-}
-
-
-
-
-
-/* ======================
-   SCAN EFFECT
-====================== */
-
-
 .scan-frame{
 
-
-display:none;
+display:block;
 
 position:absolute;
 
@@ -258,16 +38,12 @@ z-index:99;
 
 pointer-events:none;
 
-
 }
-
-
 
 
 
 .scan-frame::before,
 .scan-frame::after{
-
 
 content:"";
 
@@ -277,13 +53,11 @@ width:35px;
 
 height:35px;
 
-
 }
 
 
 
 .scan-frame::before{
-
 
 top:-3px;
 
@@ -293,15 +67,11 @@ border-left:5px solid #00ff00;
 
 border-top:5px solid #00ff00;
 
-
 }
 
 
 
-
-
 .scan-frame::after{
-
 
 right:-3px;
 
@@ -311,17 +81,11 @@ border-right:5px solid #00ff00;
 
 border-bottom:5px solid #00ff00;
 
-
 }
 
 
 
-
-
 .scan-line{
-
-
-display:none;
 
 position:absolute;
 
@@ -337,14 +101,11 @@ box-shadow:
 0 0 10px red,
 0 0 20px red;
 
-
 animation:scanMove 2s infinite;
 
 z-index:100;
 
-
 }
-
 
 
 
@@ -352,23 +113,17 @@ z-index:100;
 
 
 0%{
-
 top:25%;
-
 }
 
 
 50%{
-
 top:75%;
-
 }
 
 
 100%{
-
 top:25%;
-
 }
 
 
