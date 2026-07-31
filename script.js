@@ -18,6 +18,9 @@ txt.focus();
 
 
 
+// =============================
+// SEARCH
+// =============================
 
 async function cari(){
 
@@ -39,17 +42,19 @@ return;
 try{
 
 
-let response=
-await fetch(API_URL+"?barcode="+barcode);
+let response =
+await fetch(API_URL+"?barcode="+encodeURIComponent(barcode));
 
 
 
-let data=
+let data =
 await response.json();
 
 
 
 if(!data){
+
+hasilBarcode.innerHTML="-";
 
 hasilNama.innerHTML="BARCODE TIDAK DITEMUKAN";
 
@@ -78,12 +83,11 @@ txt.select();
 
 }
 
-catch(e){
+catch(err){
 
 alert("Gagal koneksi server");
 
 }
-
 
 
 }
@@ -108,12 +112,19 @@ cari();
 
 
 
-
+// =============================
+// SCAN
+// =============================
 
 function scanBarcode(){
 
 
-if(html5QrCode)return;
+if(html5QrCode){
+
+return;
+
+}
+
 
 
 
@@ -121,17 +132,8 @@ document.getElementById("reader").style.display="block";
 
 
 
-document.querySelector(".scan-frame").style.display="block";
-
-document.querySelector(".scan-line").style.display="block";
-
-
-
-
-
-html5QrCode=
+html5QrCode =
 new Html5Qrcode("reader");
-
 
 
 
@@ -140,8 +142,10 @@ Html5Qrcode.getCameras()
 .then(cameras=>{
 
 
-let cameraId=
+
+let cameraId =
 cameras[cameras.length-1].id;
+
 
 
 
@@ -171,7 +175,6 @@ Html5QrcodeSupportedFormats.EAN_13
 
 
 
-
 function(decodedText){
 
 
@@ -184,15 +187,18 @@ beep();
 
 
 
+
 stopScanner();
 
 
 
-setTimeout(()=>{
+setTimeout(function(){
+
 
 cari();
 
-},500);
+
+},800);
 
 
 
@@ -203,12 +209,11 @@ cari();
 function(error){}
 
 
-
 );
 
 
-
 })
+
 
 .catch(err=>{
 
@@ -218,18 +223,27 @@ alert("Kamera gagal dibuka");
 });
 
 
-
 }
 
 
 
 
 
+
+// =============================
+// STOP CAMERA
+// =============================
+
 function stopScanner(){
 
 
 
-if(html5QrCode){
+if(!html5QrCode){
+
+return;
+
+}
+
 
 
 html5QrCode.stop()
@@ -237,10 +251,20 @@ html5QrCode.stop()
 .then(()=>{
 
 
+
 html5QrCode.clear();
 
 
+
 html5QrCode=null;
+
+
+
+document.getElementById("reader").innerHTML =
+`
+<div class="scan-frame"></div>
+<div class="scan-line"></div>
+`;
 
 
 
@@ -248,10 +272,15 @@ document.getElementById("reader").style.display="none";
 
 
 
-document.querySelector(".scan-frame").style.display="none";
+})
 
-document.querySelector(".scan-line").style.display="none";
+.catch(err=>{
 
+
+console.log(err);
+
+
+html5QrCode=null;
 
 
 });
@@ -260,23 +289,22 @@ document.querySelector(".scan-line").style.display="none";
 }
 
 
-}
 
 
 
 
-
-
+// =============================
+// SOUND
+// =============================
 
 function beep(){
 
 
-let ctx=
+let ctx =
 new AudioContext();
 
 
-
-let osc=
+let osc =
 ctx.createOscillator();
 
 
@@ -284,9 +312,7 @@ ctx.createOscillator();
 osc.frequency.value=900;
 
 
-
 osc.connect(ctx.destination);
-
 
 
 osc.start();
@@ -302,7 +328,6 @@ ctx.close();
 
 
 },120);
-
 
 
 }
